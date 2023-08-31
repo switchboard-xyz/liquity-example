@@ -48,8 +48,6 @@ library ReceiverLib {
                 /*uint80 answeredInRound*/
             ) = clPriceFeed.latestRoundData();
         }
-        for (uint i = 0; i < chainlinkPriceIds.length; i++) {
-        }
     }
 
     function viewData() internal view returns (int256 data, uint256 timestamp) {
