@@ -29,6 +29,7 @@ library ReceiverLib {
 
     // Switchboard Function will call this function with the feed ids and values
     function callback(
+        uint256[] calldata switchboardPrices,
         address[] calldata chainlinkPriceIds,
         bytes32[] calldata pythPriceIds,
         bytes[] calldata pythVaas
