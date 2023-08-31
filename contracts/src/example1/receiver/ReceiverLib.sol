@@ -38,17 +38,17 @@ library ReceiverLib {
         uint fee = pyth.getUpdateFee(pythVaas);
         pyth.updatePriceFeeds{ value: fee }(pythVaas);
         for (uint i = 0; i < pythPriceIds.length; i++) {
-            PythStructs.Price memory price = pyth.getPrice(pythPriceIds[i]);
-        }
-        for (uint i = 0; i < chainlinkPriceIds.length; i++) {
-            AggregatorV3Interface priceFeed = AggregatorV3Interface(chainlinkPriceIds[i]);
+            PythStructs.Price memory pythPrice = pyth.getPrice(pythPriceIds[i]);
+            AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[i]);
             (
                 /* uint80 roundID */,
-                int answer,
+                int chainlinkPrice,
                 /*uint startedAt*/,
                 /*uint timeStamp*/,
                 /*uint80 answeredInRound*/
-            ) = priceFeed.latestRoundData();
+            ) = clPriceFeed.latestRoundData();
+        }
+        for (uint i = 0; i < chainlinkPriceIds.length; i++) {
         }
     }
 
