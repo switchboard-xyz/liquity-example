@@ -10,7 +10,7 @@ import {Switchboard} from "@switchboard-xyz/evm.js/contracts/arbitrum/testnet/Sw
 
 contract Receiver {
 
-    function callback(address[] chainlinkFeeds, bytes[] pythVaas) external {
+    function callback(address[] calldata chainlinkFeeds, bytes[] calldata pythVaas) external {
         address functionId = Switchboard.getEncodedFunctionId();
         if (AdminLib.functionId() == address(0)) {
             AdminLib.setFunctionId(functionId);
@@ -20,7 +20,7 @@ contract Receiver {
         if (functionId != AdminLib.functionId()) {
             revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
         }
-        ReceiverLib.callback(data, timestamp);
+        // ReceiverLib.callback(data, timestamp);
     }
 
     function viewData() external view returns (int256, uint256) {

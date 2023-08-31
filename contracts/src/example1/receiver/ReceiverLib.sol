@@ -2,12 +2,14 @@
 pragma solidity ^0.8.9;
 
 // This prob wont work
-import {DynamicChainlinkFeed} from "../chainlink/Chainlink.sol";
 import "@pythnetwork/pyth-sdk-solidity/IPyth.sol";
 import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
+import "@chainlink/contracts/src/v0.8/interfaces/AggregatorV3Interface.sol";
 
 library ReceiverLib {
     bytes32 constant DIAMOND_STORAGE_POSITION = keccak256("receiverlib.v1.storage");
+    IPyth constant pyth = IPyth(address(0xff1a0f4744e8582DF1aE09D5611b887B6a12925C));
+
 
     struct DiamondStorage {
         uint256 latestTimestamp;
@@ -29,18 +31,24 @@ library ReceiverLib {
     function callback(
         address[] calldata chainlinkPriceIds,
         bytes32[] calldata pythPriceIds,
-        bytes[] calldata pythVaas,
+        bytes[] calldata pythVaas
     ) internal {
         DiamondStorage storage ds = diamondStorage();
         // https://docs.pyth.network/documentation/pythnet-price-feeds/evm
-        IPyth pyth = IPyth(address(0xff1a0f4744e8582DF1aE09D5611b887B6a12925C));
-        uint fee = pyth.getUpdateFee(priceUpdateData);
+        uint fee = pyth.getUpdateFee(pythVaas);
         pyth.updatePriceFeeds{ value: fee }(pythVaas);
         for (uint i = 0; i < pythPriceIds.length; i++) {
-            PythStructs.Price price = pyth.getPrice(pythPriceIds[i]);
+            PythStructs.Price memory price = pyth.getPrice(pythPriceIds[i]);
         }
         for (uint i = 0; i < chainlinkPriceIds.length; i++) {
-            uint256 price = DynamicChainlinkFeed.setPriceFeed(chainlinkPriceIds[i]);
+            AggregatorV3Interface priceFeed = AggregatorV3Interface(chainlinkPriceIds[i]);
+            (
+                /* uint80 roundID */,
+                int answer,
+                /*uint startedAt*/,
+                /*uint timeStamp*/,
+                /*uint80 answeredInRound*/
+            ) = priceFeed.latestRoundData();
         }
     }
 
