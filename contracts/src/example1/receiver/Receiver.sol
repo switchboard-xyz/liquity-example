@@ -4,6 +4,7 @@ pragma solidity ^0.8.9;
 import {ReceiverLib} from "./ReceiverLib.sol";
 import {AdminLib} from "../admin/AdminLib.sol";
 import {ErrorLib} from "../error/ErrorLib.sol";
+import "@pythnetwork/pyth-sdk-solidity/PythStructs.sol";
 
 // Get the Switchboard Library - this is the Core Mainnet Deployment, you can swap this for one of the networks below
 import {Switchboard} from "@switchboard-xyz/evm.js/contracts/arbitrum/testnet/Switchboard.sol";
@@ -28,7 +29,7 @@ contract Receiver {
         ReceiverLib.callback(switchboardPrices, chainlinkPriceIds, pythPriceIds, pythVaas);
     }
 
-    function viewData() external view returns (int256, uint256) {
+    function viewData() external view returns (uint256 switchboardPrice, int chainlinkPrice, PythStructs.Price memory pythPrice) {
         return ReceiverLib.viewData();
     }
 }

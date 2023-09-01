@@ -12,8 +12,9 @@ library ReceiverLib {
 
 
     struct DiamondStorage {
-        uint256 latestTimestamp;
-        int256 latestData;
+        PythStructs.Price pythPrice;
+        int chainlinkPrice;
+        uint256 switchboardPrice;
     }
 
     function diamondStorage()
@@ -41,17 +42,17 @@ library ReceiverLib {
         for (uint i = 0; i < pythPriceIds.length; i++) {
             PythStructs.Price memory pythPrice = pyth.getPrice(pythPriceIds[i]);
             AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[i]);
-            (
-                /* uint80 roundID */,
-                int chainlinkPrice,
-                /*uint startedAt*/,
-                /*uint timeStamp*/,
-                /*uint80 answeredInRound*/
-            ) = clPriceFeed.latestRoundData();
+            (, int chainlinkPrice, , , ) = clPriceFeed.latestRoundData();
+            ds.switchboardPrice = switchboardPrices[i];
+            ds.pythPrice = pythPrice;
+            ds.chainlinkPrice = chainlinkPrice;
         }
     }
 
-    function viewData() internal view returns (int256 data, uint256 timestamp) {
+    function viewData() internal view returns (uint256 switchboardPrice, int chainlinkPrice, PythStructs.Price memory pythPrice) {
         DiamondStorage storage ds = diamondStorage();
+        switchboardPrice = ds.switchboardPrice;
+        chainlinkPrice = ds.chainlinkPrice;
+        pythPrice = ds.pythPrice;
     }
 }
