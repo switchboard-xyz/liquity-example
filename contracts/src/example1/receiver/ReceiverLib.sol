@@ -37,16 +37,14 @@ library ReceiverLib {
     ) internal {
         DiamondStorage storage ds = diamondStorage();
         // https://docs.pyth.network/documentation/pythnet-price-feeds/evm
-        uint fee = pyth.getUpdateFee(pythVaas);
-        pyth.updatePriceFeeds{ value: fee }(pythVaas);
-        for (uint i = 0; i < pythPriceIds.length; i++) {
-            PythStructs.Price memory pythPrice = pyth.getPrice(pythPriceIds[i]);
-            AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[i]);
-            (, int chainlinkPrice, , , ) = clPriceFeed.latestRoundData();
-            ds.switchboardPrice = switchboardPrices[i];
-            ds.pythPrice = pythPrice;
-            ds.chainlinkPrice = chainlinkPrice;
-        }
+        // uint fee = pyth.getUpdateFee(pythVaas);
+        // pyth.updatePriceFeeds{ value: fee }(pythVaas);
+        // PythStructs.Price memory pythPrice = pyth.getPrice(pythPriceIds[i]);
+        AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[0]);
+        (, int chainlinkPrice, , , ) = clPriceFeed.latestRoundData();
+        ds.switchboardPrice = switchboardPrices[0];
+        // ds.pythPrice = pythPrice;
+        ds.chainlinkPrice = chainlinkPrice;
     }
 
     function viewData() internal view returns (uint256 switchboardPrice, int chainlinkPrice, PythStructs.Price memory pythPrice) {

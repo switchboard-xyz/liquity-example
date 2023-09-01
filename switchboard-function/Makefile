@@ -11,10 +11,8 @@ all: build
 
 docker_build:
 	${DOCKER_BUILD_COMMAND} -f Dockerfile -t ${DOCKER_IMAGE_NAME} --load ./
-	@make measurement
 docker_publish:
 	${DOCKER_BUILD_COMMAND} -f Dockerfile -t ${DOCKER_IMAGE_NAME} --push ./
-	@make measurement
 
 build: docker_build measurement
 

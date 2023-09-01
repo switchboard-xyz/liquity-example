@@ -17,10 +17,11 @@ async function main() {
   const push = await ethers.getContractAt("Receiver", sbPushAddress);
   const p = await push.deployed();
 
-  const [iv, timestamp] = await p.viewData();
+  const [sb, cl, pyth] = await p.viewData();
   console.log("============");
-  console.log(`Implied Vol: ${new Big(iv.toString()).div(divisor).toString()}`);
-  console.log(`Timestamp: ${timestamp}`);
+  console.log(`sb: ${new Big(sb.toString()).div(divisor).toString()}`);
+  console.log(`cl: ${cl}`);
+  console.log(`pyth: ${pyth}`);
   console.log("============");
 }
 

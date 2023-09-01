@@ -38,6 +38,7 @@ pub struct DeribitResponse {
 
 #[tokio::main(worker_threads = 12)]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let _ = 0;
     // --- Initialize clients ---
     let function_runner = EVMFunctionRunner::new()?;
     let receiver: Address = env!("EXAMPLE_PROGRAM").parse()?;
@@ -72,7 +73,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD
     ];
     let pyth_vaas = pyth::fetch_testnet_vaas(pyth_price_ids.clone()).await?;
-    let _fee = pyth::fetch_fee_for_vaas(&pyth_vaas).await?;
+    let fee = pyth::fetch_fee_for_vaas(&pyth_vaas).await?;
     let pyth_price_ids: Vec<[u8; 32]> = pyth_price_ids
         .iter()
         .map(|x| hex::decode(&x[2..]).unwrap().try_into().unwrap())
@@ -94,6 +95,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         pyth_price_ids,
         pyth_vaas,
     );
+    // let callback = callback.value(fee);
     let expiration = (Utc::now().timestamp() + 120).into();
     let gas_limit = 5_500_000.into();
     function_runner.emit(receiver, expiration, gas_limit, vec![callback])?;
@@ -105,7 +107,6 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
 mod tests {
     use crate::pyth::*;
     use crate::*;
-    
 
     #[tokio::test]
     async fn test() -> Result<(), Box<dyn std::error::Error>> {
@@ -124,12 +125,13 @@ mod tests {
             "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e".parse()?, // ETH/USD
         ];
         // https://pyth.network/developers/price-feed-ids#pyth-evm-testnet
+        //
         let pyth_price_ids = vec![
             "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD
             "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD
         ];
         let pyth_vaas = pyth::fetch_testnet_vaas(pyth_price_ids.clone()).await?;
-        let _fee = pyth::fetch_fee_for_vaas(&pyth_vaas).await?;
+        // let _fee = pyth::fetch_fee_for_vaas(&pyth_vaas).await?;
         let pyth_price_ids: Vec<[u8; 32]> = pyth_price_ids
             .iter()
             .map(|x| hex::decode(&x[2..]).unwrap().try_into().unwrap())
