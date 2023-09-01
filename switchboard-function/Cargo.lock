@@ -201,6 +201,7 @@ dependencies = [
  "ethers",
  "ethers-core",
  "futures",
+ "hex",
  "rand",
  "rust_decimal",
  "serde",
