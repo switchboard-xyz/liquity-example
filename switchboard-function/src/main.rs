@@ -2,39 +2,22 @@ pub mod pyth;
 pub use pyth::*;
 pub mod kraken;
 pub use kraken::*;
-
-
 use chrono::Utc;
-
-
+use hex;
+use serde::Deserialize;
+use switchboard_evm::sdk::EVMFunctionRunner;
+pub use switchboard_utils::reqwest;
 use ethers::{
     prelude::{abigen, SignerMiddleware},
     providers::{Http, Provider},
     types::Address,
 };
 
-use hex;
-
-
-use serde::Deserialize;
-use switchboard_evm::sdk::EVMFunctionRunner;
-pub use switchboard_utils::reqwest;
-
 abigen!(
     Receiver,
     r#"[ function callback(uint256[], address[], bytes32[], bytes[]) ]"#,
 );
 static DEFAULT_URL: &str = "https://goerli-rollup.arbitrum.io/rpc";
-
-#[derive(Debug, Deserialize)]
-pub struct DeribitRespnseInner {
-    pub mark_iv: f64,
-    pub timestamp: u64,
-}
-#[derive(Debug, Deserialize)]
-pub struct DeribitResponse {
-    pub result: DeribitRespnseInner,
-}
 
 #[tokio::main(worker_threads = 12)]
 async fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -56,21 +39,21 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     kraken_price.rescale(8);
     let switchboard_prices = vec![
         kraken_price.mantissa().into(),
-        kraken_price.mantissa().into(),
+        // kraken_price.mantissa().into(),
     ];
 
     // CHAINLINK
     // https://docs.chain.link/data-feeds/price-feeds/addresses/?network=arbitrum
     let chainlink_price_ids = vec![
         "0xA39434A63A52E749F02807ae27335515BA4b07F7".parse()?, // BTC/USD
-        "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e".parse()?, // ETH/USD
+        // "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e".parse()?, // ETH/USD
     ];
 
     // PYTH
     // https://pyth.network/developers/price-feed-ids#pyth-evm-testnet
     let pyth_price_ids = vec![
         "0xf9c0172ba10dfa4d19088d94f5bf61d3b54d5bd7483a322a982e1373ee8ea31b", // BTC/USD
-        "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD
+        // "0xca80ba6dc32e08d06f1aa886011eed1d77c77be9eb761cc10d72b7d0a2fd57a6", // ETH/USD
     ];
     let pyth_vaas = pyth::fetch_testnet_vaas(pyth_price_ids.clone()).await?;
     let fee = pyth::fetch_fee_for_vaas(&pyth_vaas).await?;
