@@ -78,7 +78,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
         pyth_price_ids,
         pyth_vaas,
     );
-    // let callback = callback.value(fee);
+    let callback = callback.value(fee);
     let expiration = (Utc::now().timestamp() + 120).into();
     let gas_limit = 5_500_000.into();
     function_runner.emit(receiver, expiration, gas_limit, vec![callback])?;
