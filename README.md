@@ -146,6 +146,8 @@ export EXAMPLE_PROGRAM=<RECEIVER_ADDRESS>
 make publish
 ```
 
+`NOTE: Make sure your docker build is publically readable`
+
 After this is published, you are free to make your function account to set the rate of run for the function.
 
 ### Initializing the function
@@ -291,15 +293,8 @@ We can't guarantee that the function will run on the blockchain, but we can test
 Run the following to test your function:
 
 ```bash
-export CHAIN_ID=12345 # can be any integer
-export FUNCTION_KEY=${FUNCTION_ID?} # can be any valid address
-export VERIFIER=${SWITCHBOARD_ADDRESS?} # can be any valid address
-export PAYER=${SWITCHBOARD_ADDRESS?} # can be any valid address
-export VERIFYING_CONTRACT=${SWITCHBOARD_ADDRESS?} # can be any valid address
-export REWARD_RECEIVER=${SWITCHBOARD_ADDRESS?} # can be any valid address
 export EXAMPLE_PROGRAM=${SWITCHBOARD_ADDRESS?} # can be any valid address
-cargo build
-cargo run # Note: this will include a warning about a missing quote which can be safely ignored.
+cargo test -- --nocapture # Note: this will include a warning about a missing quote which can be safely ignored.
 ```
 
 Successful output:
@@ -392,4 +387,3 @@ contract ReceiverExample is Recipient {
   }
 }
 ```
-# liquity-example
