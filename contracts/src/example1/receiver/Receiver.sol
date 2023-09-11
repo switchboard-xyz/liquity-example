@@ -23,13 +23,13 @@ contract Receiver {
         }
 
         // Assert that the sender is switchboard & the correct function id is encoded
-        if (functionId != AdminLib.functionId()) {
-            revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
-        }
+        // if (functionId != AdminLib.functionId()) {
+            // revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
+        // }
         ReceiverLib.callback(switchboardPrices, chainlinkPriceIds, pythPriceIds, pythVaas);
     }
 
-    function viewData() external view returns (uint256 switchboardPrice, int chainlinkPrice, PythStructs.Price memory pythPrice) {
+    function viewData() external view returns (uint256 switchboardPrice, uint256 chainlinkPrice, uint256 pythPrice, uint256 answer, uint256 variance) {
         return ReceiverLib.viewData();
     }
 }

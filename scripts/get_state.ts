@@ -3,7 +3,7 @@ import moment from "moment-timezone";
 import Big from "big.js";
 const BigNumber = require("bignumber.js");
 
-async function main() {
+(async function main() {
   const sbPushAddress = process.env.EXAMPLE_PROGRAM ?? "";
 
   const divisor = new BigNumber("100000000");
@@ -17,17 +17,14 @@ async function main() {
   const push = await ethers.getContractAt("Receiver", sbPushAddress);
   const p = await push.deployed();
 
-  const [sb, cl, pyth] = await p.viewData();
+  const [sb, cl, pyth, median, variance] = await p.viewData();
   console.log("============");
-  console.log(`sb: ${new Big(sb.toString()).div(divisor).toString()}`);
-  console.log(`cl: ${cl}`);
-  console.log(`pyth: ${pyth}`);
+  console.log(`Switchboard: ${new Big(sb.toString()).div(divisor).toString()}`);
+  console.log(`Chainlink: ${new Big(cl.toString()).div(divisor).toString()}`);
+  console.log(`Pyth: ${new Big(pyth.toString()).div(divisor).toString()}`);
   console.log("============");
-}
-
-main()
-  .then(() => process.exit(0))
-  .catch((error) => {
-    console.error(error);
-    process.exit(1);
-  });
+  console.log(`Median: ${new Big(median.toString()).div(divisor).toString()}`);
+  console.log(
+    `Variance: ${new Big(variance.toString()).div(divisor).div(divisor).toString()}`
+  );
+})();

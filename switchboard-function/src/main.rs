@@ -12,6 +12,7 @@ use ethers::{
     providers::{Http, Provider},
     types::{Address, Bytes},
 };
+use std::time::Instant;
 
 abigen!(
     Receiver,
@@ -40,7 +41,7 @@ async fn perform() -> Result<(), Box<dyn std::error::Error>> {
     ];
 
     // CHAINLINK
-    // https://docs.chain.link/data-feeds/price-feeds/addresses/?network=arbitrum
+    // https://docs.chain.link/data-feeds/price-feeds/addresses?network=arbitrum
     let chainlink_price_ids = vec![
         "0x6550bc2301936011c1334555e62A87705A81C12C".parse()?, // BTC/USD
     ];
@@ -58,14 +59,6 @@ async fn perform() -> Result<(), Box<dyn std::error::Error>> {
         .map(|x| hex::decode(&x[2..]).unwrap().try_into().unwrap())
         .collect();
     // --- END LOGIC ---
-
-    println!(
-        "{}, {:#?}, {:?}, {:?}",
-        kraken_price.clone(),
-        chainlink_price_ids.clone(),
-        pyth_price_ids.clone(),
-        pyth_vaas.clone()
-    );
 
     // --- Send the callback to the contract with Switchboard verification ---
     let callback = receiver_contract.callback(
@@ -93,7 +86,14 @@ mod tests {
 
     #[tokio::test]
     async fn test() -> Result<(), Box<dyn std::error::Error>> {
+        let start = Instant::now();
         switchboard_evm::test::init_test_runtime();
-        perform().await
+        perform().await?;
+        let duration = start.elapsed().as_secs();
+        if duration > 5 {
+            println!("Warning: your function takes excessive runtime. Oracles may opt to kill your function before completion");
+        }
+        Ok(())
+
     }
 }
