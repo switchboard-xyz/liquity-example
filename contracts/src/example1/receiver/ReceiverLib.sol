@@ -46,7 +46,7 @@ library ReceiverLib {
         AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[0]);
         (, int chainlinkPrice, , , ) = clPriceFeed.latestRoundData();
         int256 pythResult = pythPrice.price;
-        require(pythPrice.price >= 0, "Cannot convert a negative int64 to uint256");
+        require(pythPrice.price >= 0, "Cannot convert a negative int to uint256");
         uint256[] memory prices = new uint256[](3);
         prices[0] = switchboardPrices[0];
         prices[1] = uint256(pythResult);
