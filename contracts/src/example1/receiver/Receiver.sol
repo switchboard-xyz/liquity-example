@@ -16,16 +16,16 @@ contract Receiver {
         address[] calldata chainlinkPriceIds,
         bytes32[] calldata pythPriceIds,
         bytes[] calldata pythVaas
-    ) external {
-        address functionId = Switchboard.getEncodedFunctionId();
-        if (AdminLib.functionId() == address(0)) {
-            AdminLib.setFunctionId(functionId);
-        }
-
-        // Assert that the sender is switchboard & the correct function id is encoded
-        if (functionId != AdminLib.functionId()) {
-            revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
-        }
+    ) external payable {
+        // address functionId = Switchboard.getEncodedFunctionId();
+        // if (AdminLib.functionId() == address(0)) {
+            // AdminLib.setFunctionId(functionId);
+        // }
+//
+        // // Assert that the sender is switchboard & the correct function id is encoded
+        // if (functionId != AdminLib.functionId()) {
+            // revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
+        // }
         ReceiverLib.callback(switchboardPrices, chainlinkPriceIds, pythPriceIds, pythVaas);
     }
 

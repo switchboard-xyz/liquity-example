@@ -45,7 +45,7 @@ async fn main() -> Result<(), Box<dyn std::error::Error>> {
     // CHAINLINK
     // https://docs.chain.link/data-feeds/price-feeds/addresses/?network=arbitrum
     let chainlink_price_ids = vec![
-        "0xA39434A63A52E749F02807ae27335515BA4b07F7".parse()?, // BTC/USD
+        "0x6550bc2301936011c1334555e62A87705A81C12C".parse()?, // BTC/USD
         // "0xD4a33860578De61DBAbDc8BFdb98FD742fA7028e".parse()?, // ETH/USD
     ];
 
