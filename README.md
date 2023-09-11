@@ -125,7 +125,7 @@ Build functions from the `switchboard-function/` directory with
 
 ```bash
 cd switchboard-function
-make docker_build
+make build
 ```
 
 ### Publishing and Initialization
@@ -143,7 +143,7 @@ Here, set the name of your container and deploy it using:
 cd switchboard-function
 export CONTAINER_NAME=your_docker_username/switchboard-function
 export EXAMPLE_PROGRAM=<RECEIVER_ADDRESS>
-make docker_publish
+make publish
 ```
 
 After this is published, you are free to make your function account to set the rate of run for the function.
