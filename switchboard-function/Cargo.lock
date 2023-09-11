@@ -3543,9 +3543,9 @@ dependencies = [
 
 [[package]]
 name = "switchboard-evm"
-version = "0.3.17"
+version = "0.3.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e318e3554b16c9858e92f3029c76dcd82f4d4daaae5fd78a610f7a0481ea13dd"
+checksum = "8f19567959fd6f119b4e4c5f7c2ec709c285de7ac20986af5955ddfb5f8ab412"
 dependencies = [
  "Inflector",
  "chrono",

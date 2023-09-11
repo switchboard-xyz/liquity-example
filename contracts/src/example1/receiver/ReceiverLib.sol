@@ -37,8 +37,10 @@ library ReceiverLib {
     ) internal {
         DiamondStorage storage ds = diamondStorage();
         // https://docs.pyth.network/documentation/pythnet-price-feeds/evm
-        uint fee = pyth.getUpdateFee(pythVaas);
-        pyth.updatePriceFeeds{ value: fee }(pythVaas);
+        if (pythVaas.length != 0) {
+            uint fee = pyth.getUpdateFee(pythVaas);
+            pyth.updatePriceFeeds{ value: fee }(pythVaas);
+        }
         PythStructs.Price memory pythPrice = pyth.getPrice(pythPriceIds[0]);
         AggregatorV3Interface clPriceFeed = AggregatorV3Interface(chainlinkPriceIds[0]);
         (, int chainlinkPrice, , , ) = clPriceFeed.latestRoundData();
