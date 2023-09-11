@@ -23,9 +23,9 @@ contract Receiver {
         }
 
         // Assert that the sender is switchboard & the correct function id is encoded
-        // if (functionId != AdminLib.functionId()) {
-            // revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
-        // }
+        if (functionId != AdminLib.functionId()) {
+            revert ErrorLib.InvalidSender(AdminLib.functionId(), functionId);
+        }
         ReceiverLib.callback(switchboardPrices, chainlinkPriceIds, pythPriceIds, pythVaas);
     }
 
