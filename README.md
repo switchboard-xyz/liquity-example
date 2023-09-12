@@ -171,8 +171,7 @@ sb evm function fund $FUNCTION_ID --fundAmount .1 --chain $CHAIN --account /path
 
 ### Printing the state of your callback
 
-This repo contains an example script to view the current verified deribit implied volatility info
-currently in contract:
+This repo contains an example script to view the current contract info:
 
 ```bash
 npx hardhat run --network arbitrumTestnet scripts/get_state.ts
