@@ -88,7 +88,7 @@ sb evm function --help
 
 ### Contract
 
-This example contract acts as the ingestor of the switchboard-function in this directory to fetch implied volatility parameters via deribit. The example contract is an example of the [ERC2535 diamond contract pattern](https://autifynetwork.com/exploring-erc-2535-the-diamond-standard-for-smart-contracts/) so it can be extended and upgraded for your needs.
+This example contract acts as an oracle aggregator between any pulled value in the function runtime, pyth, and chainlink. The example contract is an example of the [ERC2535 diamond contract pattern](https://autifynetwork.com/exploring-erc-2535-the-diamond-standard-for-smart-contracts/) so it can be extended and upgraded for your needs.
 
 When you deploy this contract, it will await to be bound to a switchboard function calling into it.
 
